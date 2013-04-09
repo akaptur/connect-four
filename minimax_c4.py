@@ -25,26 +25,21 @@ def is_row_win(grid):
             print connected_squares
             if len(set(connected_squares)) == 1:
                 member = connected_squares.pop() # get the only member of the set
-                    if member != 0:
-                        return member
+                if member != 0:
+                    return member
     return None
 
 def is_col_win(grid):
-    for col in range(COLUMNS):
-        pass
-    mc = grid[((ROWS+1)/2)]
-    for i in range(COLUMNS):
-        #check to see if row3 and 4 have a match first
-        if mc[i] != 0:
-            is_winner = mc[i]
-            streak = 0
-            for row in reversed(grid):
-                if row[i] == is_winner:
-                    streak += 1
-                else:
-                    streak = 0
-                if streak >= TO_WIN:
-                    return is_winner
+    for col_num in range(COLUMNS):
+        col = [row[col_num] for row in grid]
+        print "col", col
+        for start in range(ROWS - TO_WIN +1):
+            connected_squares = [col[start+i] for i in range(TO_WIN)]
+            print connected_squares
+            if len(set(connected_squares)) == 1:
+                member = connected_squares.pop() # get the only member of the set
+                if member != 0:
+                    return member
     return None
 
 def check_diagonal(player, index, grid):
