@@ -40,40 +40,26 @@ def is_col_win(grid):
                     return member
     return None
 
-def check_diagonal(player, index, grid):
-    f_index = index
-    b_index = index
-    f_streak = 1
-    b_streak = 1
-
-    for row in reversed(grid):
-        f_index += 1
-        b_index -= 1
-        if f_index < COLUMNS and row[f_index] == player:
-            f_streak += 1
-        else:
-            f_streak = 0
-        if b_index >= 0 and row[b_index] == player:
-            b_streak += 1
-        else:
-            b_streak = 0
-        if f_streak == 0 and b_streak == 0:
-            return None
-    if f_streak == TO_WIN or b_streak == TO_WIN:
-        return player
-    else:
-        return None
+def generate_legal_diagonals(grid):
+    diags = []
+    # top left -> bottom right
+    for row_num in range(ROWS - TO_WIN + 1):
+        for col_num in range(COLUMNS - TO_WIN + 1):
+            connected_squares = [grid[row_num+i][col_num+i] for i in range(TO_WIN)]
+            diags.append(connected_squares)
+    # bottom left -> top right
+    for row_num in range(TO_WIN-1, ROWS): # loop over last rows
+        for col_num in range(COLUMNS - TO_WIN + 1):
+            connected_squares = [grid[row_num-i][col_num+i] for i in range(TO_WIN)]
+            diags.append(connected_squares)
+    return diags
 
 def is_diag_win(grid):
-    mr = (ROWS + 1)/2
-    for i, row in enumerate(reversed(grid[mr:])):
-        for j, column in enumerate(row):
-            if column != 0:
-                top = ROWS - TO_WIN - i
-                bottom = ROWS - 1 - i
-                winner = check_diagonal(column, j,  grid[top:bottom])
-                if winner:
-                    return winner
+    for diag in generate_legal_diagonals(grid):
+        if len(set(diag)) == 1:
+            member = set(diag).pop()
+            if member != 0:
+                return member
     return None
 
 def determine_winner(grid):
