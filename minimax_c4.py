@@ -1,5 +1,6 @@
 # from connect_four import get_row
 import pprint
+import pdb
 
 ROWS = 3
 COLUMNS = 3
@@ -22,7 +23,6 @@ def is_row_win(grid):
     for row in reversed(grid):
         for start in range(COLUMNS - TO_WIN + 1):
             connected_squares = [row[start+i] for i in range(TO_WIN)]
-            print connected_squares
             if len(set(connected_squares)) == 1:
                 member = connected_squares.pop() # get the only member of the set
                 if member != 0:
@@ -32,10 +32,8 @@ def is_row_win(grid):
 def is_col_win(grid):
     for col_num in range(COLUMNS):
         col = [row[col_num] for row in grid]
-        print "col", col
         for start in range(ROWS - TO_WIN +1):
             connected_squares = [col[start+i] for i in range(TO_WIN)]
-            print connected_squares
             if len(set(connected_squares)) == 1:
                 member = connected_squares.pop() # get the only member of the set
                 if member != 0:
@@ -113,7 +111,6 @@ def get_max_or_min(possible_moves, player):
 
 def recur_add_player_depth(board, player, boards=[], col=0):
     pp.pprint(board)
-    import pdb
     # pdb.set_trace()
     winner = determine_winner(board)
     if winner:
